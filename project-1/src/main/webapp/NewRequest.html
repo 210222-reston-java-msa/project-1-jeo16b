@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>New Request</title>
+
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+	integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+	crossorigin="anonymous">
+</head>
+<body>
+
+	<div id="nav-placeholder"></div>
+    <div class="container-fluid">
+
+		<form name="requestForm" onsubmit="sendRequest(event.preventDefault())">
+			<!--  onSubmit=sendLogin())> sendLogin is a JS function -->
+			<!-- we can add an event listener here to trigger a javascript function -->
+
+			<div class="form-group">
+				<label for="amount">Amount</label>
+				<!--  note that the name of the input matches to our loginServlet logic -->
+				<input type="number" class="form-control" name="amount" id="amount"
+					placeholder="Enter Amount">
+			</div>
+
+			<div class="form-group">
+				<label for="description">Description</label>
+				<!--  note that the name of the input matches to our loginServlet logic -->
+				<input type="text" class="form-control" name="description"
+					id="des" placeholder="Enter Description (250 characters max)">
+			</div>
+
+            <div class="form-group">
+				<label for="type">Choose a Type</label>
+				<!--  note that the name of the input matches to our loginServlet logic -->
+				<select id="type" class="form-control" name="type">
+                    <option value="1">Lodging</option>
+                    <option value="2">Travel</option>
+                    <option value="3">Food</option>
+                    <option value="4">Other</option>
+                </select>
+			</div>
+			
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+
+		</form>
+		
+
+
+	</div>
+
+	<script src="//code.jquery.com/jquery.min.js"></script>
+	<script>
+	$.get("EmployeeNav.html", function(data){
+		$("#nav-placeholder").replaceWith(data);
+	});
+	</script>
+
+	<script src="scripts/NewRequest.js"></script>
+
+</body>
+</html>

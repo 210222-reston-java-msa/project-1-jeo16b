@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+    <link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+	integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+	crossorigin="anonymous">
+  
+</head>
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <div class="container-fluid">
+
+		<form name="UpdateForm" onsubmit="sendUpdate(event.preventDefault())">
+			<!--  onSubmit=sendUpdate())> sendUpdate is a JS function -->
+			<!-- we can add an event listener here to trigger a javascript function -->
+
+            <div>
+                <h1 id= "id">ID: </h1>
+
+            </div>
+			<div class="form-group">
+				<label for="fName">First Name</label>
+				
+				<input type="text" class="form-control" name="firstName" id="fName"
+					placeholder="Enter First Name">
+			</div>
+
+			<div class="form-group">
+				<label for="lName">Last Name</label>
+				
+				<input type="text" class="form-control" name="lastName"
+					id="lName" placeholder="Enter Last Name">
+			</div>
+
+            <div class="form-group">
+				<label for="uName">Username</label>
+				
+				<input type="text" class="form-control" name="username"
+					id="uName" placeholder="Enter username">
+			</div>
+
+            <div class="form-group">
+				<label for="pWord">Password</label>
+				
+				<input type="password" class="form-control" name="pWord"
+					id="pWord" placeholder="Enter Password">
+			</div>
+
+            <div class="form-group">
+				<label for="email">Email</label>
+				
+				<input type="text" class="form-control" name="email"
+					id="email" placeholder="Enter Email">
+			</div>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+
+		</form>
+		
+
+
+	</div>
+
+
+
+    <script src="//code.jquery.com/jquery.min.js"></script>
+    <script>
+    $.get("ManagerNav.html", function(data){
+        $("#nav-placeholder").replaceWith(data);
+    });
+    </script>
+
+
+    <script>
+        let userId = document.getElementById('id');
+
+        let userString = sessionStorage.getItem('currentUser');
+        let currentUser = JSON.parse(userString);
+
+        id.innerHTML = "ID: " + currentUser.id;
+        function sendUpdate() {
+            
+            let id = currentUser.id;
+            console.log("send Update triggered");
+            // save some variables here
+            let fName = document.getElementById('fName').value;
+            let lName = document.getElementById('lName').value;
+            let uName = document.getElementById('uName').value;
+            let pWord = document.getElementById('pWord').value;
+            let email = document.getElementById('email').value;
+
+            console.log(`First Name: ${fName}`);
+            console.log(`Last Name: ${lName}`);
+            console.log(`Username: ${uName}`);
+            console.log(`Password: ${pWord}`);
+            console.log(`Email: ${email}`);
+
+            // building an obj literal with the user credentials
+            let User= {
+                id: id,
+                firstName: fName,
+                lastName: lName,
+                username: uName,
+                password: pWord,
+                email: email,
+                role: 1
+            }
+
+            let xhr = new XMLHttpRequest();
+
+            // 2. xhr.onreadystatechange
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    console.log("success");
+
+                    sessionStorage.setItem('currentUser', this.responseText);
+
+
+                    let userString = sessionStorage.getItem('currentUser');
+                    
+                    let currentUser = JSON.parse(userString);
+
+                            window.location = "http://localhost:8080/project-1/EmployeeHome.html";
+                        
+                            console.log(sessionStorage.getItem('currentUser'));
+                }
+
+                if (this.readyState === 4 && this.status === 204) { // 204 means NO CONTENT FOUND (but connection was made)
+
+                    console.log("failed to update info");
+
+                    let childDiv = document.getElementById('warningText');
+                    childDiv.textContent = "Failed to login!  Username or Password is incorrect"
+                }
+            }
+            
+            // 3. xhr.open("POST, "http:/localhost:8080/project-1/url for the loginServlet")
+            xhr.open("POST", "http://localhost:8080/project-1/update")
+
+            // 4. xhr.send();
+            xhr.send(JSON.stringify(User))
+        }
+            </script>
+    
+</body>
+</html>
